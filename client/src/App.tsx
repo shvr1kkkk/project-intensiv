@@ -1,8 +1,6 @@
 import Home from "./components/Navbar"
-import Card from "./components/Card"
-import Button from "./components/Button"
-import React from "react"
-import Button2 from "./components/Button2"
+import React, { useState } from 'react';
+import Modal from "./components/Modal"; 
 
 const App = () => {
   
@@ -10,38 +8,49 @@ const App = () => {
       <div>
           <Home />
           <main>
-              <Cards>
+              <ModalProps>
               
-              </Cards>
+              </ModalProps>
           </main>
       </div>
   )
 }
 export default App
 
-const Cards  = () => {
+
+
+const ModalProps: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resumes, setResumes] = useState<Array<{ firstName: string; lastName: string; specialty: string; group: string }>>([]);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleSubmit = (data: { firstName: string; lastName: string; specialty: string; group: string }) => {
+      setResumes([...resumes, data]);
+  };
+
   return (
-      <div>
-          <h1>Пример компонента с бордером</h1>
-          <Card />
-          <Button></Button>
-          <Buttons></Buttons>
+      <div className="App">
+          <button className="create-resume-button" onClick={handleOpenModal}>Создать Резюме</button>
+          <Modal isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} />
+          <div className="resume-list">
+              {resumes.map((resume, index) => (
+                  <div key={index} className="dannie">
+                      <p >Имя: {resume.firstName}</p>
+                      <p >Фамилия: {resume.lastName}</p>
+                      <p >Специальность: {resume.specialty}</p>
+                      <p >Группа: {resume.group}</p>
+                  </div>
+              ))}
+          </div>
       </div>
   );
 };
 
-const Buttons: React.FC = () => {
-  return (
-       <Buttons2></Buttons2>
-  );
-};
 
-const Buttons2: React.FC = () => {
 
-return(
-<Button2></Button2>
-);
-};
+
 
 
 
